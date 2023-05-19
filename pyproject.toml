@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "lab-game-topdown"
+version = "0.1.0"
+description = ""
+authors = ["emma <eqbrown@isf.edu.hk>"]
+readme = "README.md"
+packages = [{include = "lab_game_topdown"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+arcade = "^2.6.17"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
