@@ -1,30 +1,26 @@
 import arcade
-from player import PlayerCharacter
 from helpers import scale
 from enemy import Enemy
-# 💻 Try changing these numbers to adjust the scale of the game
+from player import Player
+
+
 TILE_SCALING = 2
 PLAYER_SCALING = 2
 ENEMY_SCALING = 2
 ENEMY_SIZE = 2
 
 # Grid Size
-SPRITE_PIXEL_SIZE = 28
+SPRITE_PIXEL_SIZE = 32
 GRID_PIXEL_SIZE = SPRITE_PIXEL_SIZE * TILE_SCALING
 
-# SPRITE_SCALING = 0.5
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 600
 
-
-SCREEN_TITLE = "Better Move Sprite with Keyboard Example"
-
 MOVEMENT_SPEED = 5
-UPDATES_PER_FRAME = 5
-# animation sprite
-RIGHT_FACING = 0
-LEFT_FACING = 1
+
+SCREEN_TITLE = "Top Down Example"
+
 
 class MyGame(arcade.Window):
     def __init__(self, width, height, title):
@@ -36,8 +32,8 @@ class MyGame(arcade.Window):
         super().__init__(width, height, title)
 
         self.game_over = False
-        # Track the current state of what key is pressed
 
+        # Track the current state of what key is pressed
         self.left_pressed = False
         self.right_pressed = False
         self.up_pressed = False
@@ -64,21 +60,17 @@ class MyGame(arcade.Window):
         # Set the background color
         arcade.set_background_color(arcade.color.BLACK)
 
+        
 
-        # Sprite lists
-        # self.player_list = arcade.SpriteList()
-
-        # Set up the player
-        # self.player_sprite = Player("assets/sprites/slime.png",
-        #                             PLAYER_SCALING)
-        self.player = PlayerCharacter()
-
+        # SETS UP PLAYER
+        self.player_list = arcade.SpriteList()
+        self.player_sprite = Player("assets/sprites/frog_standing.png", PLAYER_SCALING)
         self.player_sprite.center_x = 200
         self.player_sprite.center_y = 200
         self.player_list.append(self.player_sprite)
 
 
-        # sets up enemies
+        # SETS UP ENEMIES
         self.enemy_list = arcade.SpriteList()
 
         # enemy with boundries
@@ -145,8 +137,7 @@ class MyGame(arcade.Window):
 
         if not self.game_over:
             self.physics_engine.update()
-            # self.player_sprite.update()
-            self.player_list.update_animation(RIGHT_FACING, LEFT_FACING)
+            self.player_sprite.update()
 
             self.enemy_list.update()
 
@@ -157,7 +148,6 @@ class MyGame(arcade.Window):
         enemies_hit = arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)
         for enemy in enemies_hit:
             enemy.on_collison(self.player_sprite)
-
 
         for enemy in self.enemy_list:
             # If the enemy hit a wall, reverse
@@ -185,10 +175,13 @@ class MyGame(arcade.Window):
         elif key == arcade.key.LEFT:
             self.left_pressed = True
             self.update_player_speed()
+            self.player_sprite.character_face_direction = 1   # flips sprite to face left
 
         elif key == arcade.key.RIGHT:
             self.right_pressed = True
             self.update_player_speed()
+            self.player_sprite.character_face_direction = 0   # flips sprite to face right
+            
         elif key == arcade.key.ESCAPE:
             arcade.exit()
 
